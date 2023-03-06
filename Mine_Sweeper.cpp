@@ -9,8 +9,8 @@ using namespace std;
 
 int m , n , K ;
 int x , y ;
-int Map[MAX][MAX]; //map
-bool check_Map[MAX][MAX]; //trang thai
+int Map[MAX][MAX]; //mang map
+bool check_Map[MAX][MAX]; //mang danh dau
 bool game_Over;
 
 void input();
@@ -29,7 +29,7 @@ int main(){
     return 0;
 }
 
-
+//nhap du lieu map
 void input(){
     do{
         cout <<  "  Nhap chieu dai va chieu rong cua Map \n  Luu y : 0 < chieu dai , chieu rong < 10 : " ;
@@ -47,7 +47,7 @@ void set_Map(){
     for(int i = 0; i < m ; i++){
         for(int j = 0; j < n ; j++){
             Map[i][j] = 0 ;
-            check_Map[i][j] = false;
+            check_Map[i][j] = false; //cac gia tri trong map dc danh dau = false;
         }
     }
 }
@@ -95,20 +95,20 @@ int near_Mine(){
 //lua chon cua ban
 void your_Choice(){
     do{
-            cout << " Nhap toa do o can mo ( Luu y : chi so bat dau tu 0) : ";
-            cin >> x >> y ; 
-        }while(x < 0 || y < 0 || x >=m || y >=n);
+         cout << " Nhap toa do o can mo ( Luu y : chi so bat dau tu 0) : ";
+         cin >> x >> y ; 
+      }while(x < 0 || y < 0 || x >=m || y >=n);
 }
 
 void start_Game(){
     game_Over = false;
-    //start game
+    
     while(!game_Over){
 
         current_Map();
         your_Choice();
 
-        check_Map[x][y] = true;
+        check_Map[x][y] = true; //danh dau toa do (x,y) dc open
 
         if(Map[x][y] == -1){
             cout << "YOU'RE DEAD !!!" << endl;
