@@ -8,14 +8,16 @@ using namespace std;
 
 
 int m , n , K ;
-int Map[MAX][MAX]; //luu map
-bool check_Map[MAX][MAX]; //luu cac trang thai
+int x , y ;
+int Map[MAX][MAX]; //map
+bool check_Map[MAX][MAX]; //trang thai
+bool game_Over;
 
 void input();
 void set_Map();
 void get_Mine(); 
 void current_Map();
-int near_Mine(int x , int y);
+int near_Mine();
 void start_Game();
 
 
@@ -40,7 +42,7 @@ void input(){
     }while(K <= 0 || K >= 10); 
 }
 
-//khoi tao ban do 
+//khoi tao  
 void set_Map(){
     for(int i = 0; i < m ; i++){
         for(int j = 0; j < n ; j++){
@@ -52,24 +54,23 @@ void set_Map(){
 
 //sinh min ngau nhien
 void get_Mine(){
-    int count_Mine = 0;
     srand(unsigned(time(NULL)));
-    while(count_Mine < K){
+    while(K--){
         int x = rand() % m;
         int y = rand() % n;
         if(Map[x][y] != -1){
-            Map[x][y] = -1;
-            count_Mine++;
+            Map[x][y] = -1; //tao min = gia tri -1
         }
     }
 }
 
+//in ra map hien tai
 void current_Map(){
     for(int i = 0; i < m ; i++){
         for(int j = 0; j < n ; j++){
             if(check_Map[i][j]){
                 if(Map[i][j] == -1) 
-                    cout << "X ";
+                    cout << "X ";  // X la vi tri co min
                 else 
                     cout << Map[i][j] << " ";
             }else{
@@ -80,7 +81,8 @@ void current_Map(){
     }
 }
 
-int near_Mine(int x , int y){
+//in ra so bom xung quanh o da chon
+int near_Mine(){
     int cnt = 0 ;
     for(int i= x - 1; i <= x + 1; i++){
         for(int j= y - 1; j <= y + 1; j++){
@@ -90,17 +92,21 @@ int near_Mine(int x , int y){
     return cnt;
 }
 
+//lua chon cua ban
+void your_Choice(){
+    do{
+            cout << " Nhap toa do o can mo ( Luu y : chi so bat dau tu 0) : ";
+            cin >> x >> y ; 
+        }while(x < 0 || y < 0 || x >=m || y >=n);
+}
+
 void start_Game(){
-    bool game_Over = false;
+    game_Over = false;
     //start game
     while(!game_Over){
 
         current_Map();
-        int x , y ;
-        do{
-            cout << " Nhap toa do o can mo ( Luu y : chi so bat dau tu 0) : ";
-            cin >> x >> y ; 
-        }while(x < 0 || y < 0 || x >=m || y >=n);
+        your_Choice();
 
         check_Map[x][y] = true;
 
@@ -109,7 +115,7 @@ void start_Game(){
             current_Map();
             game_Over = true;
         }else{
-            int count_mine = near_Mine(x,y);
+            int count_mine = near_Mine();
             Map[x][y] = count_mine;
 
             int WIN = 0 ;
@@ -127,13 +133,3 @@ void start_Game(){
         }
     }
 }
-
-
-
-
-
-
-
-
-
-
